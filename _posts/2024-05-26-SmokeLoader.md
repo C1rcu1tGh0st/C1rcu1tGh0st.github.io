@@ -17,7 +17,7 @@ In initial stage the main events that occur that needs our attention is a call t
 
 
 
-![](assets/ss/smokeloader/1.png) 
+![](https://freeimage.host/i/d2PBlGj) 
 *Fig 1: Call to VirtualAllocEx and writing data to allocated buffer* 
 
 ![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/2.png)
