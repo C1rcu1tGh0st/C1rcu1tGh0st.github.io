@@ -5,7 +5,7 @@ categories: [malware analysis, ]
 tags: [smokeloader, malware]     # TAG names should always be lowercase
 ---
 
-# SmokeLoader Malware Analysis
+# SmokeLoader Malware Analysis 212
 
 SmokeLoader is primarily a loader which was first detected in 2011, and its main objective is to download or load a stealthier or more effective malware into the system. It increases its capability by adding new tactics and techniques regularly and constantly evolving with time.
 
@@ -23,7 +23,7 @@ In initial stage the main events that occur that needs our attention is a call t
 ![](assets/ss/smokeloader/2.PNG)
 *Fig 2: call to shellcode data manipulation routine*
 
-![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/3.PNG)
+![](assets/ss/smokeloader/3.PNG)
 
 *Fig 3: Finally Call to EAX or Allocated Buffer which is the shellcode entrypoint*
 
@@ -33,10 +33,10 @@ This shellcode calls 2 important functions
 
 * The first function takes a struct as parameter and later populates more members into it which are resolved API address, this function involves API hashing and PEB walking to resolve API's
 
-![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/5.png)
+![](assets/ss/smokeloader/5.PNG)
 *Fig 4: populating the structure*
 
-![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/4.png) 
+![](assets/ss/smokeloader/4.PNG) 
 *Fig 5: Hashes being passed to resolving function*
 
 ![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/6.png)
