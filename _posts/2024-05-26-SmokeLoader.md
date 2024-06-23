@@ -22,7 +22,7 @@ In initial stage the main events that occur that needs our attention is a call t
 ![](assets/ss/smokeloader/2.PNG)
 *Fig 2: call to shellcode data manipulation routine*
 
-![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/3.PNG)
+![](assets/ss/smokeloader/3.PNG)
 *Fig 3: Finally Call to EAX or Allocated Buffer which is the shellcode entrypoint*
 
 ## Shellcode 1
