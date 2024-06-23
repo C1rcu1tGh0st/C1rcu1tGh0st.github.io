@@ -39,10 +39,10 @@ This shellcode calls 2 important functions
 ![](assets/ss/smokeloader/4.PNG) 
 *Fig 5: Hashes being passed to resolving function*
 
-![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/6.png)
+![](assets/ss/smokeloader/6.PNG)
 *Fig 6: PEB walking to resolve api address of LoadLibraryA and GetProcAddress From Kernel32.dll*
 
-![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/7.png)
+![](assets/ss/smokeloader/7.PNG)
 *Fig 7: sll1AddHash32 hashing function*
 
 This is how the populated structure looks like
@@ -68,16 +68,16 @@ struct mw_struct_1 // sizeof=0x34
 
 * Once The structure gets populated it is passed as the parameter to the 2nd function, a call to `CreateToolhelp32Snapshot` and `Module32First` is done to get the first module of the process, another function is called after that, Here a call to `VirtualAlloc` is made, before that the 2nd shellcode data which can be found at offset which is a member of struct `enc_shellcode_offset_0x6c1f` this shell code data is decrypted using a xor decryption function, the `ms_rand()` function which takes a seed from the structure is used to generate keys for decrypting the bytes of shellcode data, further more this xor decrypted data is then passed to a decompression algorithm of some sort(I couldn't find the name of algo). The new shellcode(2nd layer) is written to the allocated buffer and then is `JMP` to the new shellcode.
 
-![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/create32.png)
+![](assets/ss/smokeloader/create32.PNG)
 *Fig 8: getting the first module loaded*
 
-![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/8.png)
+![](assets/ss/smokeloader/8.PNG)
 *Fig 9: Call to xor decryption function and and VirtualAlloc and then the Decompression followed by JMP to Shellcode*
 
-![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/10.png)
+![](assets/ss/smokeloader/10.PNG)
 *Fig 10:  xor decryption function*
 
-![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/9.png)
+![](assets/ss/smokeloader/9.PNG)
 *Fig 11: ms_rand() function*
 
 ## Shellcode 2
@@ -128,23 +128,23 @@ struct mw_struct // sizeof=0x90
 
 After crafting the structure the malware calls a subroutine where it calls GetFileAttributesA to get system attributes of a non existing file named `apfHQ` my best guess is this some sort of anti-emulation
 
-![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/11.png)
+![](assets/ss/smokeloader/11.PNG)
 *Fig 12: Calls GetFileAttributesA to perform anti-emulation*
 
 The shellcode creates a windows class by making use of 2 API's which are `RegisterClassExA` and `CreateWindowExA` with a class name `saodkfnosa9uin`
 
-![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/12.png)
+![](assets/ss/smokeloader/12.PNG)
 *Fig 13: Creates a Windows Class*
 
 Now the shellcode calls a function that will inject the PE by making use of Process Hollowing technique 
 
-![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/13.png)
+![](assets/ss/smokeloader/13.PNG)
 *Fig 14: Creates another process in suspended state*
 
-![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/14.png)
+![](assets/ss/smokeloader/14.PNG)
 *Fig 15: Unmaps the memory and writes new binary*
 
-![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/15.png)
+![](assets/ss/smokeloader/15.PNG)
 *Fig 16: Sets the thread context and resume thread in new process*
 
 
@@ -152,7 +152,7 @@ Now the shellcode calls a function that will inject the PE by making use of Proc
 
 Stage 2 binary is full of anti-analysis tricks we starts with [Opaque predicate](https://en.wikipedia.org/wiki/Opaque_predicate) and this [blog](https://n1ght-w0lf.github.io/malware%20analysis/smokeloader/#opaque-predicates) has good walk through of how to deal with it and another blog from [OALABS](https://research.openanalysis.net/smoke/smokeloader/loader/config/yara/triage/2022/08/25/smokeloader.html) which can help in dealing this.
 
-![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/16.png)
+![](assets/ss/smokeloader/16.PNG)
 *Fig 17: signs of Opaque predicate*
 
 The code can be cleaned up by patching the those conditional jumps to a `JMP` instruction and `NOP` out the rest of junk bytes this script from [n1ght-w0lf's Blog](https://n1ght-w0lf.github.io/malware%20analysis/smokeloader/#opaque-predicates) can be used to do this.
