@@ -491,7 +491,7 @@ we can spot RC4 function being used while looking through the binary, checking x
 
 the string table is aligned in this manner the first byte of the encrypted_string_table is the length of first encrypted string followed by encrypted string and it continues we can use the script from [OALABS](https://research.openanalysis.net/smoke/smokeloader/loader/config/yara/triage/2022/08/25/smokeloader.html) to decrypt the strings
 
-![](assets/ss/smokeloader/stage3/5.PNG)
+![](assets/ss/smokeloader/stage3/5.png)
 *Fig 38: string table alignment*
 
 
@@ -592,7 +592,7 @@ in this sample there is only two c2 url in the structs but it may vary in other 
 ![](assets/ss/smokeloader/stage3/7.PNG)
 *Fig 39: c2 url structure*
 
-![](assets/ss/smokeloader/stage3/6.PNG)
+![](assets/ss/smokeloader/stage3/6.png)
 *Fig 40: encrypted c2 url data alignment*
 
 following script can be used to get the config
