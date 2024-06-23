@@ -19,14 +19,6 @@ In initial stage the main events that occur that needs our attention is a call t
 ![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/1.PNG) 
 *Fig 1: Call to VirtualAllocEx and writing data to allocated buffer* 
 
-![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/2.png)
-*Fig 2: call to shellcode data manipulation routine*
-
-![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/3.png)
-
-![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/1.PNG) 
-*Fig 1: Call to VirtualAllocEx and writing data to allocated buffer* 
-
 ![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/2.PNG)
 *Fig 2: call to shellcode data manipulation routine*
 
