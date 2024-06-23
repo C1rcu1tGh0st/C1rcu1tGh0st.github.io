@@ -16,7 +16,6 @@ The sample that is being analyzed here can be picked up from [02afba9405a5b480a7
 In initial stage the main events that occur that needs our attention is a call to `VirtualAllocEx` which allocates memory and writes data into it, this is not yet the shellcode. This data is then passed as a parameter to a followup function which will manipulate the data and present the shellcode, finally there is a call to `EAX` which take us to the shellcode entry point. Also during the course to the shellcode entry point the malware introduces garbage api calls which can be spotted in below images too.
 
 
-<<<<<<< HEAD
 ![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/1.PNG) 
 *Fig 1: Call to VirtualAllocEx and writing data to allocated buffer* 
 
@@ -24,7 +23,7 @@ In initial stage the main events that occur that needs our attention is a call t
 *Fig 2: call to shellcode data manipulation routine*
 
 ![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/3.png)
-=======
+
 ![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/1.PNG) 
 *Fig 1: Call to VirtualAllocEx and writing data to allocated buffer* 
 
@@ -32,7 +31,6 @@ In initial stage the main events that occur that needs our attention is a call t
 *Fig 2: call to shellcode data manipulation routine*
 
 ![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/3.PNG)
->>>>>>> d0ff09841bce3bfe6ddaf85f414847784a080b3a
 *Fig 3: Finally Call to EAX or Allocated Buffer which is the shellcode entrypoint*
 
 ## Shellcode 1
