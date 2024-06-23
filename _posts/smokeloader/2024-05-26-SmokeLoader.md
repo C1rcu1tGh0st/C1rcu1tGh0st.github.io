@@ -16,13 +16,13 @@ The sample that is being analyzed here can be picked up from [02afba9405a5b480a7
 In initial stage the main events that occur that needs our attention is a call to `VirtualAllocEx` which allocates memory and writes data into it, this is not yet the shellcode. This data is then passed as a parameter to a followup function which will manipulate the data and present the shellcode, finally there is a call to `EAX` which take us to the shellcode entry point. Also during the course to the shellcode entry point the malware introduces garbage api calls which can be spotted in below images too.
 
 
-![](/assets/ss/smokeloader/1.png) 
+![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/1.PNG) 
 *Fig 1: Call to VirtualAllocEx and writing data to allocated buffer* 
 
-![](/assets/ss/smokeloader/2.png)
+![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/2.png)
 *Fig 2: call to shellcode data manipulation routine*
 
-![](/assets/ss/smokeloader/3.png)
+![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/3.png)
 *Fig 3: Finally Call to EAX or Allocated Buffer which is the shellcode entrypoint*
 
 ## Shellcode 1
@@ -31,16 +31,16 @@ This shellcode calls 2 important functions
 
 * The first function takes a struct as parameter and later populates more members into it which are resolved API address, this function involves API hashing and [PEB walking](http://ropgadget.com/posts/pebwalk.html) to resolve API's
 
-![](/assets/ss/smokeloader/5.png)
+![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/5.png)
 *Fig 4: populating the structure*
 
-![](/assets/ss/smokeloader/4.png) 
+![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/4.png) 
 *Fig 5: Hashes being passed to resolving function*
 
-![](/assets/ss/smokeloader/6.png)
+![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/6.png)
 *Fig 6: PEB walking to resolve api address of LoadLibraryA and GetProcAddress From Kernel32.dll*
 
-![](/assets/ss/smokeloader/7.png)
+![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/7.png)
 *Fig 7: sll1AddHash32 hashing function*
 
 This is how the populated structure looks like
@@ -66,16 +66,16 @@ struct mw_struct_1 // sizeof=0x34
 
 * Once The structure gets populated it is passed as the parameter to the 2nd function, a call to `CreateToolhelp32Snapshot` and `Module32First` is done to get the first module of the process, another function is called after that, Here a call to `VirtualAlloc` is made, before that the 2nd shellcode data which can be found at offset which is a member of struct `enc_shellcode_offset_0x6c1f` this shell code data is decrypted using a xor decryption function, the `ms_rand()` function which takes a seed from the structure is used to generate keys for decrypting the bytes of shellcode data, further more this xor decrypted data is then passed to a decompression algorithm of some sort(I couldn't find the name of algo). The new shellcode(2nd layer) is written to the allocated buffer and then is `JMP` to the new shellcode.
 
-![](/assets/ss/smokeloader/create32.png)
+![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/create32.png)
 *Fig 8: getting the first module loaded*
 
-![](/assets/ss/smokeloader/8.png)
+![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/8.png)
 *Fig 9: Call to xor decryption function and and VirtualAlloc and then the Decompression followed by JMP to Shellcode*
 
-![](/assets/ss/smokeloader/10.png)
+![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/10.png)
 *Fig 10:  xor decryption function*
 
-![](/assets/ss/smokeloader/9.png)
+![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/9.png)
 *Fig 11: ms_rand() function*
 
 ## Shellcode 2
