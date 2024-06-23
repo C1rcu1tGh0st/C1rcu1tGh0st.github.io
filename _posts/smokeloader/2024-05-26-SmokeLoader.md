@@ -183,8 +183,8 @@ pop     edx
 
 ```
 
-![](/assets/ss/smokeloader/funcdec/1.png)
-*Fig 17: xor function decryption routine*
+#![](/assets/ss/smokeloader/funcdec/1.png)
+#*Fig 17: xor function decryption routine*
 
 using this script from the above mentioned blog by just changing the offset and key
 
@@ -224,8 +224,8 @@ for i in range(0,num//4*4, 4):
 
 ```
 
-![](/assets/ss/smokeloader/funcdec/2.png)
-*Fig 18: djb2 hashing function used to resolve API's*
+#![](/assets/ss/smokeloader/funcdec/2.png)
+#*Fig 18: djb2 hashing function used to resolve API's*
 
 smokeldr intended to resolve API's from `ntdll.dll`, `kernel32`, `user32`, `advapi32`, `shell32` interestingly for `ntdll.dll`  it maps the dll and resolve API's from there, this is an anti-hooking method used since AV's usually hooks certain API's from `ntdll.dll`
 
