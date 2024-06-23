@@ -5,7 +5,7 @@ categories: [malware analysis, ]
 tags: [smokeloader, malware]     # TAG names should always be lowercase
 ---
 
-# SmokeLoader Malware Analysis 212
+# SmokeLoader Malware Analysis 212123123122222
 
 SmokeLoader is primarily a loader which was first detected in 2011, and its main objective is to download or load a stealthier or more effective malware into the system. It increases its capability by adding new tactics and techniques regularly and constantly evolving with time.
 
