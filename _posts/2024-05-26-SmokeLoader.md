@@ -483,7 +483,7 @@ we can spot RC4 function being used while looking through the binary, checking x
 ![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/stage3/3.png)
 *Fig 36: rc4 function*
 
-![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/stage3/4.png)
+![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/stage3/4.PNG)
 *Fig 37: string table decryption function*
 
 
