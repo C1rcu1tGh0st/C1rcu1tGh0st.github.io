@@ -1,5 +1,5 @@
 ---
-title: SmokeLoader Malware Analysis 
+title: SmokeLoader Malware Analysis TEst
 date: 2024-06-23 
 categories: [malware analysis, ]
 tags: [smokeloader, malware]     # TAG names should always be lowercase
