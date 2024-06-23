@@ -224,12 +224,12 @@ for i in range(0,num//4*4, 4):
 
 ```
 
-![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/funcdec/2.png)
+![](assets/ss/smokeloader/funcdec/2.PNG)
 *Fig 18: djb2 hashing function used to resolve API's*
 
 smokeldr intended to resolve API's from `ntdll.dll`, `kernel32`, `user32`, `advapi32`, `shell32` interestingly for `ntdll.dll`  it maps the dll and resolve API's from there, this is an anti-hooking method used since AV's usually hooks certain API's from `ntdll.dll`
 
-![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/funcdec/3.png)
+![](assets/ss/smokeloader/funcdec/3.PNG)
 *Fig 18: Ntdll.dll anti-hooking*
 
 <details open>
@@ -340,7 +340,7 @@ struct iat
 
 Smokeldr loves to avoid infecting Russian and Ukraine Machines this is one of the well known feature in smokeldr, it is done by making a call to `GetKeyboardLayoutList` and checking for specific id's `Ukranian(0x422)` and `Russian(0x419)` 
 
-![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/funcdec/4.png)
+![](assets/ss/smokeloader/funcdec/4.PNG)
 *Fig 19: Skip infection*
 
 
@@ -349,7 +349,7 @@ Smokeldr loves to avoid infecting Russian and Ukraine Machines this is one of th
 
 Malware checks for current running integrity level and runs the malware with higher privilege if it finds it is currently running as low privilege, it make use of `OpenProcessToken` and `GetTokenInformation` to check the integrity level and compare the `TokenAuditPolicy` value to 0x2000(SECURITY_MANDATORY_MEDIUM_RID ) if its below the value it means low integrity level in that case the malware make use of `ShellExecuteExW` to run the malware under WMIC(Windows Management Instrumentation Command-line).
 
-![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/funcdec/5.png)![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/funcdec/6.png)
+![](assets/ss/smokeloader/funcdec/6.PNG)
 *Fig 20: Check Privilege and run as admin*
 
 ### Anti-Emulation And Anti-VM Check
@@ -359,20 +359,20 @@ Before injecting the payload the malware runs bunch of anti-vm and anti-emulatio
 #### Checking for a Non Existing file
 Smokeldr check for a non-existing file `7869.vmt` to see if it return true, in normal condition it returns an error but if its ran in an emulator it would return a handle or in this case pointer to string there by detecting the presence an emulator.
 
-![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/funcdec/7.png)
+![](assets/ss/smokeloader/funcdec/7.PNG)
 *Fig 21: searching for 7869.vmt in module filename to detect emulator*
 
 #### ProcessDebugPort Check
 By calling `NtQueryInformationProcess` with `ProcessDebugPort` as `ProcessInformationClass` parameter the malware checks for debugger port number if a debugger is present, the call returns a non zero value
 
-![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/funcdec/8.png)
+![](assets/ss/smokeloader/funcdec/8.PNG)
 *Fig 22: Querying the ProcessDebugPort*
 
 #### Sandbox And AV Modules Checks
 
 Malware checks for specific dlls sbidedll(Sandboxie), aswhook(Avast) and snxhk(Symantec) if its loaded into smokeldr memory space
 
-![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/funcdec/9.png)
+![](assets/ss/smokeloader/funcdec/9.PNG)
 *Fig 23: specific dll checks*
 
 #### Registry Check
@@ -387,16 +387,16 @@ converts them to lowercase and search for
 
 `qemu`, `virtio`, `vmware`, `vbox`, `xen` these strings are related to vm's and emulators
 
-![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/funcdec/10.png)
+![](assets/ss/smokeloader/funcdec/10.PNG)
 *Fig 24: enumerating registry keys for vm checks*
 
-![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/funcdec/11.png)
+![](assets/ss/smokeloader/funcdec/11.PNG)
 *Fig 25: enumerating registry keys for vm checks*
 
-![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/funcdec/12.png)
+![](assets/ss/smokeloader/funcdec/12.PNG)
 *Fig 26: enumerating registry keys for vm checks*
 
-![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/funcdec/13.png)
+![](assets/ss/smokeloader/funcdec/13.PNG)
 *Fig 27: enumerating registry keys for vm checks*
 
 
@@ -413,10 +413,10 @@ vboxtray.exe
 vmtoolsd.exe
 prl_tools.exe
 ```
-![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/funcdec/14.png)
+![](assets/ss/smokeloader/funcdec/14.PNG)
 *Fig 28: gets SystemProcessInformation*
 
-![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/funcdec/15.png)
+![](assets/ss/smokeloader/funcdec/15.PNG)
 *Fig 29: process that are compared*
 
 
@@ -438,10 +438,10 @@ vioser
 
 ```
 
-![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/funcdec/16.png)
+![](assets/ss/smokeloader/funcdec/16.PNG)
 *Fig 30: gets SystemModuleInformation*
 
-![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/funcdec/17.png)
+![](assets/ss/smokeloader/funcdec/17.PNG)
 *Fig 31: modules that are compared*
 
 
@@ -449,7 +449,7 @@ vioser
 
 Once all the checks has been done the malware checks for current machine architecture by getting the value in `GS` segment register `GS` register will contain 0 if its x86 machine and in x64 it will contain a positive value. once it figured out architecture it will decrypt the payload 
 
-![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/injection/1.png)
+![](assets/ss/smokeloader/injection/1.PNG)
 *Fig 32: checking the architecture and determining the payload*
 
 the data is encrypted by a hard coded xor key `0x604008FE` decryption is multiple of 4 and if there is any tailing byte its decrypted by a single byte key `0xFE` we could use the script from [OALABS](https://research.openanalysis.net/smoke/smokeloader/loader/config/yara/triage/2022/08/25/smokeloader.html) to get the payload, once the payload is extracted it is decompressed by LZSA2 algorithm we can use the tool from this repo [emmanuel-marty](https://github.com/emmanuel-marty/lzsa) to decompress it.
@@ -458,13 +458,13 @@ use the command `lzsa.exe -d -r -f 2 filename outfilename`
 
 The third stage is injected to explorer.exe, smokeldr calls `GetShellWindow` to get a handle to explorer.exe and `GetWindowThreadProcessId ` to get its PID once that attained it calls `NtOpenProcess` and duplicates the handle of explorer.exe by calling `NtDublicateObject` then it create a section using `NtCreateSection` on with READ_WRITE permission and maps it to malware process address space and explorer, then it creates another section with PAGE_EXECUTE_READWRITE and maps that too after that it writes the payload to this section, then it call `RtlCreateUserThread`  to create a new thread in explorer.exe and sets start address as payload address.
 
-![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/injection/2.png)
+![](assets/ss/smokeloader/injection/2.PNG)
 
-![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/injection/3.png)
+![](assets/ss/smokeloader/injection/3.PNG)
 
-![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/injection/4.png)
+![](assets/ss/smokeloader/injection/4.PNG)
 
-![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/injection/5.png)
+![](assets/ss/smokeloader/injection/5.PNG)
 *Fig 33: injecting payload*
 
 
@@ -472,18 +472,18 @@ The third stage is injected to explorer.exe, smokeldr calls `GetShellWindow` to 
 
 Taking a look at stage 3 binary we can see that its PE header is destroyed if we try to load this in ida we would get messed up alignments when it comes to address and offsets to fix that we can use HxD or any other hex editor to carve out section specifically and load it in ida and re-base it accordingly. In the following image we see the code starts at offset 0x400 we can copy the data from there to where it ends which is 0x3580 we can save these byte into a new file and load it in ida for better results, this will help to locate encrypted string table and c2 config once re-based properly
 
-![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/stage3/1.png)
+![](assets/ss/smokeloader/stage3/1.PNG)
 *Fig 34: code section starting at offset 0x400 that we are interested*
 
-![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/stage3/2.png)
+![](assets/ss/smokeloader/stage3/2.PNG)
 *Fig 35: end of code section at offset 0x3580 that we are interested*
 
 we can spot RC4 function being used while looking through the binary, checking xref of rc4 function we lands in a function where we can spot the encrypted data and decryption key address but its little messed up to fix it we need to re-base the binary taking a look at fig:37 we can see address of key is at `0x100012B0` and address of encrypted data is at `0x100012B4` we need re-base the binary at `0x10001000` to get this address resolved, once done it will be easy to navigate the binary.
 
-![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/stage3/3.png)
+![](assets/ss/smokeloader/stage3/3.PNG)
 *Fig 36: rc4 function*
 
-![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/stage3/4.png)
+![](assets/ss/smokeloader/stage3/4.PNG)
 *Fig 37: string table decryption function*
 
 
@@ -491,7 +491,7 @@ we can spot RC4 function being used while looking through the binary, checking x
 
 the string table is aligned in this manner the first byte of the encrypted_string_table is the length of first encrypted string followed by encrypted string and it continues we can use the script from [OALABS](https://research.openanalysis.net/smoke/smokeloader/loader/config/yara/triage/2022/08/25/smokeloader.html) to decrypt the strings
 
-![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/stage3/5.png)
+![](assets/ss/smokeloader/stage3/5.PNG)
 *Fig 38: string table alignment*
 
 
@@ -589,10 +589,10 @@ b'.net'
 finding more xref of RC4 function will lead to c2 url decryption routine, there is a structure that has pointers to encrypted c2 url data the encrypted data is aligned differently for c2's first is the length of encrypted data, 4byte decryption key followed by encrypted data,
 in this sample there is only two c2 url in the structs but it may vary in other samples of smokeldr
 
-![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/stage3/7.png)
+![](assets/ss/smokeloader/stage3/7.PNG)
 *Fig 39: c2 url structure*
 
-![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/stage3/6.png)
+![](assets/ss/smokeloader/stage3/6.PNG)
 *Fig 40: encrypted c2 url data alignment*
 
 following script can be used to get the config
