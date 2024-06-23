@@ -16,31 +16,31 @@ The sample that is being analyzed here can be picked up from [02afba9405a5b480a7
 In initial stage the main events that occur that needs our attention is a call to `VirtualAllocEx` which allocates memory and writes data into it, this is not yet the shellcode. This data is then passed as a parameter to a followup function which will manipulate the data and present the shellcode, finally there is a call to `EAX` which take us to the shellcode entry point. Also during the course to the shellcode entry point the malware introduces garbage api calls which can be spotted in below images too.
 
 
-![](/assets/ss/smokeloader/1.png) 
+![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/1.png) 
 *Fig 1: Call to VirtualAllocEx and writing data to allocated buffer* 
 
-![](/assets/ss/smokeloader/2.png)
+![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/2.png)
 *Fig 2: call to shellcode data manipulation routine*
 
-![](/assets/ss/smokeloader/3.png)
+![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/3.png)
 *Fig 3: Finally Call to EAX or Allocated Buffer which is the shellcode entrypoint*
 
 ## Shellcode 1
 
 This shellcode calls 2 important functions 
 
-* The first function takes a struct as parameter and later populates more members into it which are resolved API address, this function involves API hashing and [PEB walking](http://ropgadget.com/posts/pebwalk.html) to resolve API's
+* The first function takes a struct as parameter and later populates more members into it which are resolved API address, this function involves API hashing and PEB walking to resolve API's
 
-![](/assets/ss/smokeloader/5.png)
+![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/5.png)
 *Fig 4: populating the structure*
 
-![](/assets/ss/smokeloader/4.png) 
+![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/4.png) 
 *Fig 5: Hashes being passed to resolving function*
 
-![](/assets/ss/smokeloader/6.png)
+![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/6.png)
 *Fig 6: PEB walking to resolve api address of LoadLibraryA and GetProcAddress From Kernel32.dll*
 
-![](/assets/ss/smokeloader/7.png)
+![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/7.png)
 *Fig 7: sll1AddHash32 hashing function*
 
 This is how the populated structure looks like
@@ -66,16 +66,16 @@ struct mw_struct_1 // sizeof=0x34
 
 * Once The structure gets populated it is passed as the parameter to the 2nd function, a call to `CreateToolhelp32Snapshot` and `Module32First` is done to get the first module of the process, another function is called after that, Here a call to `VirtualAlloc` is made, before that the 2nd shellcode data which can be found at offset which is a member of struct `enc_shellcode_offset_0x6c1f` this shell code data is decrypted using a xor decryption function, the `ms_rand()` function which takes a seed from the structure is used to generate keys for decrypting the bytes of shellcode data, further more this xor decrypted data is then passed to a decompression algorithm of some sort(I couldn't find the name of algo). The new shellcode(2nd layer) is written to the allocated buffer and then is `JMP` to the new shellcode.
 
-![](/assets/ss/smokeloader/create32.png)
+![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/create32.png)
 *Fig 8: getting the first module loaded*
 
-![](/assets/ss/smokeloader/8.png)
+![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/8.png)
 *Fig 9: Call to xor decryption function and and VirtualAlloc and then the Decompression followed by JMP to Shellcode*
 
-![](/assets/ss/smokeloader/10.png)
+![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/10.png)
 *Fig 10:  xor decryption function*
 
-![](/assets/ss/smokeloader/9.png)
+![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/9.png)
 *Fig 11: ms_rand() function*
 
 ## Shellcode 2
@@ -126,23 +126,23 @@ struct mw_struct // sizeof=0x90
 
 After crafting the structure the malware calls a subroutine where it calls GetFileAttributesA to get system attributes of a non existing file named `apfHQ` my best guess is this some sort of anti-emulation
 
-![](/assets/ss/smokeloader/11.png)
+![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/11.png)
 *Fig 12: Calls GetFileAttributesA to perform anti-emulation*
 
 The shellcode creates a windows class by making use of 2 API's which are `RegisterClassExA` and `CreateWindowExA` with a class name `saodkfnosa9uin`
 
-![](/assets/ss/smokeloader/12.png)
+![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/12.png)
 *Fig 13: Creates a Windows Class*
 
 Now the shellcode calls a function that will inject the PE by making use of Process Hollowing technique 
 
-![](/assets/ss/smokeloader/13.png)
+![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/13.png)
 *Fig 14: Creates another process in suspended state*
 
-![](/assets/ss/smokeloader/14.png)
+![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/14.png)
 *Fig 15: Unmaps the memory and writes new binary*
 
-![](/assets/ss/smokeloader/15.png)
+![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/15.png)
 *Fig 16: Sets the thread context and resume thread in new process*
 
 
@@ -150,7 +150,7 @@ Now the shellcode calls a function that will inject the PE by making use of Proc
 
 Stage 2 binary is full of anti-analysis tricks we starts with [Opaque predicate](https://en.wikipedia.org/wiki/Opaque_predicate) and this [blog](https://n1ght-w0lf.github.io/malware%20analysis/smokeloader/#opaque-predicates) has good walk through of how to deal with it and another blog from [OALABS](https://research.openanalysis.net/smoke/smokeloader/loader/config/yara/triage/2022/08/25/smokeloader.html) which can help in dealing this.
 
-![](/assets/ss/smokeloader/16.png)
+![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/16.png)
 *Fig 17: signs of Opaque predicate*
 
 The code can be cleaned up by patching the those conditional jumps to a `JMP` instruction and `NOP` out the rest of junk bytes this script from [n1ght-w0lf's Blog](https://n1ght-w0lf.github.io/malware%20analysis/smokeloader/#opaque-predicates) can be used to do this.
@@ -183,7 +183,7 @@ pop     edx
 
 ```
 
-#![](/assets/ss/smokeloader/funcdec/1.png)
+#![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/funcdec/1.png)
 #*Fig 17: xor function decryption routine*
 
 using this script from the above mentioned blog by just changing the offset and key
@@ -224,12 +224,12 @@ for i in range(0,num//4*4, 4):
 
 ```
 
-#![](/assets/ss/smokeloader/funcdec/2.png)
-#*Fig 18: djb2 hashing function used to resolve API's*
+![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/funcdec/2.png)
+*Fig 18: djb2 hashing function used to resolve API's*
 
 smokeldr intended to resolve API's from `ntdll.dll`, `kernel32`, `user32`, `advapi32`, `shell32` interestingly for `ntdll.dll`  it maps the dll and resolve API's from there, this is an anti-hooking method used since AV's usually hooks certain API's from `ntdll.dll`
 
-![](/assets/ss/smokeloader/funcdec/3.png)
+![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/funcdec/3.png)
 *Fig 18: Ntdll.dll anti-hooking*
 
 <details open>
@@ -340,7 +340,7 @@ struct iat
 
 Smokeldr loves to avoid infecting Russian and Ukraine Machines this is one of the well known feature in smokeldr, it is done by making a call to `GetKeyboardLayoutList` and checking for specific id's `Ukranian(0x422)` and `Russian(0x419)` 
 
-![](/assets/ss/smokeloader/funcdec/4.png)
+![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/funcdec/4.png)
 *Fig 19: Skip infection*
 
 
@@ -349,7 +349,7 @@ Smokeldr loves to avoid infecting Russian and Ukraine Machines this is one of th
 
 Malware checks for current running integrity level and runs the malware with higher privilege if it finds it is currently running as low privilege, it make use of `OpenProcessToken` and `GetTokenInformation` to check the integrity level and compare the `TokenAuditPolicy` value to 0x2000(SECURITY_MANDATORY_MEDIUM_RID ) if its below the value it means low integrity level in that case the malware make use of `ShellExecuteExW` to run the malware under WMIC(Windows Management Instrumentation Command-line).
 
-![](/assets/ss/smokeloader/funcdec/5.png)![](/assets/ss/smokeloader/funcdec/6.png)
+![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/funcdec/5.png)![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/funcdec/6.png)
 *Fig 20: Check Privilege and run as admin*
 
 ### Anti-Emulation And Anti-VM Check
@@ -359,20 +359,20 @@ Before injecting the payload the malware runs bunch of anti-vm and anti-emulatio
 #### Checking for a Non Existing file
 Smokeldr check for a non-existing file `7869.vmt` to see if it return true, in normal condition it returns an error but if its ran in an emulator it would return a handle or in this case pointer to string there by detecting the presence an emulator.
 
-![](/assets/ss/smokeloader/funcdec/7.png)
+![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/funcdec/7.png)
 *Fig 21: searching for 7869.vmt in module filename to detect emulator*
 
 #### ProcessDebugPort Check
 By calling `NtQueryInformationProcess` with `ProcessDebugPort` as `ProcessInformationClass` parameter the malware checks for debugger port number if a debugger is present, the call returns a non zero value
 
-![](/assets/ss/smokeloader/funcdec/8.png)
+![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/funcdec/8.png)
 *Fig 22: Querying the ProcessDebugPort*
 
 #### Sandbox And AV Modules Checks
 
 Malware checks for specific dlls sbidedll(Sandboxie), aswhook(Avast) and snxhk(Symantec) if its loaded into smokeldr memory space
 
-![](/assets/ss/smokeloader/funcdec/9.png)
+![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/funcdec/9.png)
 *Fig 23: specific dll checks*
 
 #### Registry Check
@@ -387,16 +387,16 @@ converts them to lowercase and search for
 
 `qemu`, `virtio`, `vmware`, `vbox`, `xen` these strings are related to vm's and emulators
 
-![](/assets/ss/smokeloader/funcdec/10.png)
+![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/funcdec/10.png)
 *Fig 24: enumerating registry keys for vm checks*
 
-![](/assets/ss/smokeloader/funcdec/11.png)
+![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/funcdec/11.png)
 *Fig 25: enumerating registry keys for vm checks*
 
-![](/assets/ss/smokeloader/funcdec/12.png)
+![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/funcdec/12.png)
 *Fig 26: enumerating registry keys for vm checks*
 
-![](/assets/ss/smokeloader/funcdec/13.png)
+![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/funcdec/13.png)
 *Fig 27: enumerating registry keys for vm checks*
 
 
@@ -413,10 +413,10 @@ vboxtray.exe
 vmtoolsd.exe
 prl_tools.exe
 ```
-![](/assets/ss/smokeloader/funcdec/14.png)
+![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/funcdec/14.png)
 *Fig 28: gets SystemProcessInformation*
 
-![](/assets/ss/smokeloader/funcdec/15.png)
+![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/funcdec/15.png)
 *Fig 29: process that are compared*
 
 
@@ -438,10 +438,10 @@ vioser
 
 ```
 
-![](/assets/ss/smokeloader/funcdec/16.png)
+![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/funcdec/16.png)
 *Fig 30: gets SystemModuleInformation*
 
-![](/assets/ss/smokeloader/funcdec/17.png)
+![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/funcdec/17.png)
 *Fig 31: modules that are compared*
 
 
@@ -449,7 +449,7 @@ vioser
 
 Once all the checks has been done the malware checks for current machine architecture by getting the value in `GS` segment register `GS` register will contain 0 if its x86 machine and in x64 it will contain a positive value. once it figured out architecture it will decrypt the payload 
 
-![](/assets/ss/smokeloader/injection/1.png)
+![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/injection/1.png)
 *Fig 32: checking the architecture and determining the payload*
 
 the data is encrypted by a hard coded xor key `0x604008FE` decryption is multiple of 4 and if there is any tailing byte its decrypted by a single byte key `0xFE` we could use the script from [OALABS](https://research.openanalysis.net/smoke/smokeloader/loader/config/yara/triage/2022/08/25/smokeloader.html) to get the payload, once the payload is extracted it is decompressed by LZSA2 algorithm we can use the tool from this repo [emmanuel-marty](https://github.com/emmanuel-marty/lzsa) to decompress it.
@@ -458,13 +458,13 @@ use the command `lzsa.exe -d -r -f 2 filename outfilename`
 
 The third stage is injected to explorer.exe, smokeldr calls `GetShellWindow` to get a handle to explorer.exe and `GetWindowThreadProcessId ` to get its PID once that attained it calls `NtOpenProcess` and duplicates the handle of explorer.exe by calling `NtDublicateObject` then it create a section using `NtCreateSection` on with READ_WRITE permission and maps it to malware process address space and explorer, then it creates another section with PAGE_EXECUTE_READWRITE and maps that too after that it writes the payload to this section, then it call `RtlCreateUserThread`  to create a new thread in explorer.exe and sets start address as payload address.
 
-![](/assets/ss/smokeloader/injection/2.png)
+![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/injection/2.png)
 
-![](/assets/ss/smokeloader/injection/3.png)
+![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/injection/3.png)
 
-![](/assets/ss/smokeloader/injection/4.png)
+![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/injection/4.png)
 
-![](/assets/ss/smokeloader/injection/5.png)
+![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/injection/5.png)
 *Fig 33: injecting payload*
 
 
@@ -472,18 +472,18 @@ The third stage is injected to explorer.exe, smokeldr calls `GetShellWindow` to 
 
 Taking a look at stage 3 binary we can see that its PE header is destroyed if we try to load this in ida we would get messed up alignments when it comes to address and offsets to fix that we can use HxD or any other hex editor to carve out section specifically and load it in ida and re-base it accordingly. In the following image we see the code starts at offset 0x400 we can copy the data from there to where it ends which is 0x3580 we can save these byte into a new file and load it in ida for better results, this will help to locate encrypted string table and c2 config once re-based properly
 
-![](/assets/ss/smokeloader/stage3/1.png)
+![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/stage3/1.png)
 *Fig 34: code section starting at offset 0x400 that we are interested*
 
-![](/assets/ss/smokeloader/stage3/2.png)
+![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/stage3/2.png)
 *Fig 35: end of code section at offset 0x3580 that we are interested*
 
 we can spot RC4 function being used while looking through the binary, checking xref of rc4 function we lands in a function where we can spot the encrypted data and decryption key address but its little messed up to fix it we need to re-base the binary taking a look at fig:37 we can see address of key is at `0x100012B0` and address of encrypted data is at `0x100012B4` we need re-base the binary at `0x10001000` to get this address resolved, once done it will be easy to navigate the binary.
 
-![](/assets/ss/smokeloader/stage3/3.png)
+![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/stage3/3.png)
 *Fig 36: rc4 function*
 
-![](/assets/ss/smokeloader/stage3/4.png)
+![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/stage3/4.png)
 *Fig 37: string table decryption function*
 
 
@@ -491,7 +491,7 @@ we can spot RC4 function being used while looking through the binary, checking x
 
 the string table is aligned in this manner the first byte of the encrypted_string_table is the length of first encrypted string followed by encrypted string and it continues we can use the script from [OALABS](https://research.openanalysis.net/smoke/smokeloader/loader/config/yara/triage/2022/08/25/smokeloader.html) to decrypt the strings
 
-![](/assets/ss/smokeloader/stage3/5.png)
+![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/stage3/5.png)
 *Fig 38: string table alignment*
 
 
@@ -589,10 +589,10 @@ b'.net'
 finding more xref of RC4 function will lead to c2 url decryption routine, there is a structure that has pointers to encrypted c2 url data the encrypted data is aligned differently for c2's first is the length of encrypted data, 4byte decryption key followed by encrypted data,
 in this sample there is only two c2 url in the structs but it may vary in other samples of smokeldr
 
-![](/assets/ss/smokeloader/stage3/7.png)
+![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/stage3/7.png)
 *Fig 39: c2 url structure*
 
-![](/assets/ss/smokeloader/stage3/6.png)
+![](https://github.com/C1rcu1tGh0st/C1rcu1tGh0st.github.io/blob/main/assets/ss/smokeloader/stage3/6.png)
 *Fig 40: encrypted c2 url data alignment*
 
 following script can be used to get the config
