@@ -349,7 +349,7 @@ Smokeldr loves to avoid infecting Russian and Ukraine Machines this is one of th
 
 Malware checks for current running integrity level and runs the malware with higher privilege if it finds it is currently running as low privilege, it make use of `OpenProcessToken` and `GetTokenInformation` to check the integrity level and compare the `TokenAuditPolicy` value to 0x2000(SECURITY_MANDATORY_MEDIUM_RID ) if its below the value it means low integrity level in that case the malware make use of `ShellExecuteExW` to run the malware under WMIC(Windows Management Instrumentation Command-line).
 
-![](/assets/ss/smokeloader/funcdec/5.PNG)![](assets/ss/smokeloader/funcdec/6.PNG)
+![](/assets/ss/smokeloader/funcdec/5.PNG) ![](assets/ss/smokeloader/funcdec/6.PNG)
 *Fig 20: Check Privilege and run as admin*
 
 ### Anti-Emulation And Anti-VM Check
