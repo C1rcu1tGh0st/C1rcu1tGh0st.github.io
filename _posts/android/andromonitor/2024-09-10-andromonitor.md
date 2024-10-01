@@ -542,7 +542,7 @@ private boolean YorhtnMgwkf9(ByteBuffer copied_bytes_buffer, String DexModuleMai
 
 these method a targeting `DexModuleMainManager` class that is in `main.md` dex file. from here we can fix both dex files by removing the garbage bytes before the header file and load it in JADX with no issues
 
-![](assets/ss/andromonitor/7.PNG)
+![](assets/ss/andromonitor/7.png)
 *Fig 7: hexview of the main.md file showing garbage bytes before dex header* 
 
 ![](assets/ss/andromonitor/8.PNG)
