@@ -15,34 +15,34 @@ The initial stage of this sample is an obfuscated .NET binary. Running the de4do
 
 This DLL is also obfuscated with DeepSea, making de4dot useful again for analysis. The method `NAJqp8Xm9` is responsible for decrypting and loading another DLL named `Montero`, which is packed with ConfuserEx. It then invokes the method `qj0jaev55p`, which handles decrypting the second-stage payload.
 
-![](assets/ss/darkwatchman/1.PNG) 
+![](assets/ss/darkwatchman/1.png) 
 *Fig 1: View from DIE tool* 
 
-![](assets/ss/darkwatchman/2.PNG) 
+![](assets/ss/darkwatchman/2.png) 
 *Fig 2: deepsea packer detected by de4dot* 
 
-![](assets/ss/darkwatchman/3.PNG) 
+![](assets/ss/darkwatchman/3.png) 
 *Fig 3: dynamically loaded TL module* 
 
-![](assets/ss/darkwatchman/4.PNG) 
+![](assets/ss/darkwatchman/4.png) 
 *Fig 4: the obfuscated method `NAJqp8Xm9` that is called* 
 
-![](assets/ss/darkwatchman/5.PNG) 
+![](assets/ss/darkwatchman/5.png) 
 *Fig 5: the method `NAJqp8Xm9` after de-obfuscation* 
 
-![](assets/ss/darkwatchman/6.PNG) 
+![](assets/ss/darkwatchman/6.png) 
 *Fig 6: new dll named `Montero` loaded* 
 
-![](assets/ss/darkwatchman/7.PNG) 
+![](assets/ss/darkwatchman/7.png) 
 *Fig 7: `Montero` packed with ConfuserEx* 
 
-![](assets/ss/darkwatchman/8.PNG) 
+![](assets/ss/darkwatchman/8.png) 
 *Fig 8: `Montero` dll invokes `qj0jaev55p`* 
 
-![](assets/ss/darkwatchman/9.PNG) 
+![](assets/ss/darkwatchman/9.png) 
 *Fig 9: obfuscated `qj0jaev55p` method* 
 
-![](assets/ss/darkwatchman/10.PNG) 
+![](assets/ss/darkwatchman/10.png) 
 *Fig 10: xor decryption method and decrypted binary* 
 
 ## Second Stage
@@ -57,13 +57,13 @@ Next, the sample decodes a Base64-encoded string and writes the output to C:\Use
 
 The file 3610022385 is an obfuscated JavaScript file responsible for decrypting the final-stage payload. It is executed using cmd.exe with the following command: `/C wscript.exe /E:jscript C:\Users\Username\AppData\Local\Data\3610022385 188` Here, 188 is the argument passed to the script, likely influencing the decryption or execution logic of the final stage.
 
-![](assets/ss/darkwatchman/11.PNG) 
+![](assets/ss/darkwatchman/11.png) 
 *Fig 11: writing bytes to `dynwrapx.dll`* 
 
-![](assets/ss/darkwatchman/12.PNG) 
+![](assets/ss/darkwatchman/12.png) 
 *Fig 12: writing bytes to `127195602`* 
 
-![](assets/ss/darkwatchman/13.PNG) 
+![](assets/ss/darkwatchman/13.png) 
 *Fig 13: writing bytes to `3610022385` and runs the obfuscated Javascript using cmd* 
 
 Upon analyzing the JavaScript file, it is clearly obfuscated. However, after de-obfuscation, it reveals its main function: decrypting the final-stage payload.
@@ -81,10 +81,10 @@ Key Takeaways:
 
 * Multi-Stage Approach: This attack chain involves multiple layers of obfuscation and encryption to evade security mechanisms.
 
-![](assets/ss/darkwatchman/14.PNG) 
+![](assets/ss/darkwatchman/14.png) 
 *Fig 14: `3610022385` obfuscated* 
 
-![](assets/ss/darkwatchman/15.PNG) 
+![](assets/ss/darkwatchman/15.png) 
 *Fig 15: `3610022385` de-obfuscated* 
 
 ## DarkWatchman RAT
@@ -110,23 +110,23 @@ Purpose of few Registry Keys:
 `uid + c` → Stores C2 (Command & Control) configuration 
 
 
-![](assets/ss/darkwatchman/16.PNG) 
+![](assets/ss/darkwatchman/16.png) 
 *Fig 16: `init_globals()` function* 
 
-![](assets/ss/darkwatchman/17.PNG) 
+![](assets/ss/darkwatchman/17.png) 
 *Fig 17: `get_uid()` method that gets first 8 character of machineGuid* 
 
 
-![](assets/ss/darkwatchman/18.PNG) 
+![](assets/ss/darkwatchman/18.png) 
 *Fig 18: view of the registry DWM with the configs for base64 encoded keylogger code and captured data* 
 
 The install function in DarkWatchman ensures persistence and evasion by modifying system settings. It first creates a Windows Defender exclusion path, preventing detection and allowing the malware to operate undisturbed. Next, it copies itself to the Temp folder, naming the file uid + 0.js, where uid is derived from the MachineGuid. This copied script serves as the main execution point for persistence. To maintain long-term access, the malware sets up a Task Scheduler entry, ensuring that the JScript file (uid + 0.js) runs automatically at scheduled intervals, even after system reboots, then it calls `keylogger_to_registry()` function 
 
 
-![](assets/ss/darkwatchman/19.PNG) 
+![](assets/ss/darkwatchman/19.png) 
 *Fig 19: `install()` function* 
 
-![](assets/ss/darkwatchman/20.PNG) 
+![](assets/ss/darkwatchman/20.png) 
 *Fig 20: `create_autostart_task()` function* 
 
 
@@ -136,29 +136,29 @@ The keylogger in DarkWatchman remains encrypted until execution. The file 127195
 
 Decoding the Base64 string reveals that the keylogger is written in C# and is capable of capturing both keystrokes and clipboard data. The collected clipboard and keystroke data are then stored in the registry key `uid + a`, further reinforcing DarkWatchman’s stealthy, fileless approach to data exfiltration.
 
-![](assets/ss/darkwatchman/21.PNG) 
+![](assets/ss/darkwatchman/21.png) 
 *Fig 21: gets the data from the decrypts it and writes the base64 data to registry* 
 
-![](assets/ss/darkwatchman/22.PNG) 
+![](assets/ss/darkwatchman/22.png) 
 *Fig 22: run() method of the decrypted keylogger* 
 
-![](assets/ss/darkwatchman/23.PNG) 
+![](assets/ss/darkwatchman/23.png) 
 *Fig 23: capture clipboard function* 
 
-![](assets/ss/darkwatchman/24.PNG) 
+![](assets/ss/darkwatchman/24.png) 
 *Fig 24: keyboard hook procedure* 
 
 ## C2 Setup 
 
 DarkWatchman dynamically constructs its Command and Control (C2) server URL and sets up a connection to it. Before establishing communication, the malware validates the C2 server’s availability by pinging the generated links. If a C2 server is reachable, the malware stores its details in the Windows Registry under the key `uid + c`. 
 
- ![](assets/ss/darkwatchman/25.PNG) 
+ ![](assets/ss/darkwatchman/25.png) 
 *Fig 25: gets c2 link and save it to registry key `uid +c`* 
 
- ![](assets/ss/darkwatchman/26.PNG) 
+ ![](assets/ss/darkwatchman/26.png) 
 *Fig 26: initialized data to constrict c2* 
 
- ![](assets/ss/darkwatchman/29.PNG) 
+ ![](assets/ss/darkwatchman/29.png) 
 *Fig 27: functions that handles c2 communication and sends data* 
 
 
@@ -178,10 +178,10 @@ DarkWatchman offers several remote administration commands, allowing attackers t
 
 As seen in Figure 28, these commands provide remote access, execution capabilities, and self-termination features, making DarkWatchman a highly flexible and stealthy Remote Access Trojan (RAT).
 
- ![](assets/ss/darkwatchman/27.PNG) 
+ ![](assets/ss/darkwatchman/27.png) 
 *Fig 28: other functions* 
 
- ![](assets/ss/darkwatchman/28.PNG) 
+ ![](assets/ss/darkwatchman/28.png) 
 *Fig 29: send info functions* 
 
 ## Conclusion
