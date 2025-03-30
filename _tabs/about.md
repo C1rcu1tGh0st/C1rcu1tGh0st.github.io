@@ -12,5 +12,5 @@ order: 4
 
 * Continuously improving skills in Windows internals, EDR bypass techniques, and low-level security research.
 
-* Passionate about dissecting complex malware, understanding advanced persistence mechanisms, and enhancing security defenses.
+* Passionate about dissecting complex malware, understanding advanced persistence mechanisms, and enhancing security defenses
 
