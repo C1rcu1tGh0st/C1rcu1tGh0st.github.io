@@ -1,5 +1,5 @@
 ---
-title: Unpacking DarkWatchman A Fileless JavaScript RAT in the Wild
+title: Unpacking DarkWatchman A JavaScript RAT in the Wild
 date: 2025-03-29 
 categories: [malware analysis, ]
 tags: [darkwatchman, malware, javascript, rat]     # TAG names should always be lowercase
