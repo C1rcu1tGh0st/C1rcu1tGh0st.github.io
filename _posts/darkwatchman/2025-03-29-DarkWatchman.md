@@ -156,7 +156,7 @@ DarkWatchman dynamically constructs its Command and Control (C2) server URL and 
 *Fig 25: gets c2 link and save it to registry key `uid +c`* 
 
  ![](assets/ss/darkwatchman/26.png) 
-*Fig 26: initialized data to constrict c2* 
+*Fig 26: initialized data to construct c2* 
 
  ![](assets/ss/darkwatchman/29.png) 
 *Fig 27: functions that handles c2 communication and sends data* 
