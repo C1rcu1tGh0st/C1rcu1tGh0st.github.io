@@ -4,13 +4,5 @@ icon: fas fa-info-circle
 order: 4
 ---
 
-* Reverse Engineer with 3+ years of experience in malware analysis and security research.
-
-* Started with game hacking and analyzing mod menus, which led to a deeper interest in reverse engineering.
-
-* Currently researching Windows and Android malware, focusing on evasion techniques and detection mechanisms.
-
-* Continuously improving skills in Windows internals, EDR bypass techniques, and low-level security research.
-
-* Passionate about dissecting complex malware, understanding advanced persistence mechanisms, and enhancing security defenses
+I am a reverse engineer, and this blog is where I document my learning process and share interesting things I come across in reverse engineering and malware analysis. I mainly explore Windows internals, EDR evasion, and malware techniques, writing about what I learn along the way.
 
