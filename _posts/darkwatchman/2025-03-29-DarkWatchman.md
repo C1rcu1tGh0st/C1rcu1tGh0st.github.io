@@ -187,3 +187,8 @@ As seen in Figure 28, these commands provide remote access, execution capabiliti
 ## Conclusion
 
 DarkWatchman is a highly evasive fileless malware, and while this blog does not cover all of its features, it showcases its use of registry-based storage, scheduled tasks, and Windows Defender exclusions for persistence. Its keylogger, remote commands, and dynamic C2 setup make it a significant threat. Detecting such malware requires close monitoring of registry modifications, PowerShell activity, and unusual network behavior to prevent infections.
+
+
+## References
+
+[https://cyble.com/blog/sophisticated-darkwatchman-rat-spreads-through-phishing-sites/](https://cyble.com/blog/sophisticated-darkwatchman-rat-spreads-through-phishing-sites/)
